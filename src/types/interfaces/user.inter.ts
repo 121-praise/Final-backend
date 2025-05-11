@@ -1,42 +1,21 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-
-export interface IUser extends Document {
-    fullname: string;
-    email: string;
-    userType: string;
-    password: string;
-    emailVerification: {
-        token: string;
-        expiresAt: Date;
-    };
+export enum UserRole{
+    DOCTOR = "Doctor",
+    NURSE = "Nurse",
+    PHARMACIST = "Pharmacist",
+    PATIENT = "Patient",
 }
-
-interface IOtp {
-    code: number | null;
-    expiresAt: Date | null;
-}
-
 
 export interface Iuser extends Document{
-    firstname: string;
-    lastname: string;
-    gender: string;
-    email: string;
-    password: string;
-    image?: string | ''; 
-    passwordConfirm: string;
-    yearsOfExperience: number;
-    developerTitle: string; 
-    developerStack: string[];
-    certifications?: string[]; 
-    portfolioLink?: string;
-    cvLink?: string;
-    isActive: boolean;
-    onlineStatus: boolean;
+    fullName: string;
+    matNumber: string;
+    regDate: Date;
+    hostelRoomNumber: string;
+    walletHash: string;
+    role: UserRole,
     verificationToken: string;
     verificationTokenExpires: Date;
-    otp: IOtp;
     resetPasswordToken: number;
     resetPasswordExpire: Date;
     verifyEmailToken: string;

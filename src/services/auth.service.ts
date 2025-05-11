@@ -36,21 +36,22 @@ export default class AuthService {
 
 
   static async findUserById(userId: string): Promise<Iuser | null> {
-    return User.findById(userId).select('+password');
+    return User.findById(userId)
+  }
+
+  static async findUserByHash(hash: string): Promise<Iuser | null> {
+    return User.findOne({ hash })
+  }
+
+
+  static async findUserByMatNumber(matNumber: string): Promise<Iuser | null> {
+    return User.findOne({ matNumber })
   }
 
   static async findUserByEmail(email: string): Promise<Iuser | null> {
-    const data = await User.findOne({ email }).select('+password');
+    const data = await User.findOne({ email })
 
     return data;
-  }
-
-  static async findUserByOTP(email: string, otpCode: string): Promise<Iuser | null> {
-    return User.findOne({
-      email,
-      "otp.code": otpCode,
-      "otp.expiresAt": { $gte: new Date() }
-    });
   }
 
   static signToken(id: string): string {
@@ -59,14 +60,6 @@ export default class AuthService {
     });
   }
 
-  
-  static async findUserfindOTP(otpCode: string): Promise<Iuser | null> {
-    const user = await User.findOne({ 
-      'otp.code': otpCode, 
-      'otp.expiresAt':  { $gte: new Date() } , 
-    });
-    return user;
-  }
 
   static async deleteUserById(userId: string): Promise<void> {
     await User.deleteOne({ _id: userId });
@@ -74,87 +67,14 @@ export default class AuthService {
 
   
   static async createUser(userData: Partial<Iuser>): Promise<Iuser> {
-    const otp = this.generateOTP();
     const newUser = await User.create({
       ...userData,
-      otp: {
-        code: otp,
-        expiresAt: new Date(Date.now() + 5 * 60 * 1000)
-      }
     });
 
     // await this.sendWelcomeEmail(newUser, otp);
     return newUser;
   }
 
-  static async verifyUser(user: Iuser): Promise<void> {
-    user.isActive = true;
-    user.otp.code = null;
-    await user.save({ validateBeforeSave: false });
-    // await this.sendAccountActivationEmail(user);
-  }
 
-  static async resetPassword(
-    user: Iuser, 
-    newPassword: string,
-    confirmPassword: string
-  ): Promise<void> {
-    user.password = newPassword;
-    user.passwordConfirm = confirmPassword;
-    user.otp.code = null;
-    await user.save();
-  }
-
-  static async updatePassword(
-    user: Iuser, 
-    newPassword: string,
-    confirmPassword: string
-  ): Promise<void> {
-    user.password = newPassword;
-    user.passwordConfirm = confirmPassword;
-    await user.save();
-  }
-
-  static generateOTP() {
-    return otpGenerator.generate(6, {
-      upperCaseAlphabets: false,
-      specialChars: false,
-      lowerCaseAlphabets: false,
-    });
-  }
-
-  static async sendWelcomeEmail(user: Iuser, otp: string): Promise<void> {
-    await sendEmail({
-      to: user.email,
-      subject: 'Welcome 🚀',
-      templateName: 'welcome',
-      placeholders: {
-        firstname: user.firstname,
-        otp: otp
-      },
-    });
-  }
-
-  static async sendAccountActivationEmail(user: Iuser): Promise<void> {
-    await sendEmail({
-      to: user.email,
-      subject: 'Email Verification 🚀',
-      templateName: 'account-activation',
-      placeholders: {
-        firstname: user.firstname,
-      },
-    });
-  }
-
-  static async sendForgotPasswordEmail(user: Iuser): Promise<void> {
-    await sendEmail({
-      to: user.email,
-      subject: 'Verification Link 🚀!',
-      templateName: 'forgot-password',
-      placeholders: {
-        firstname: user.firstname,
-      },
-    });
-  }
 }
 
