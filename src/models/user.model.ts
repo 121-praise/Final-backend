@@ -2,71 +2,28 @@ import mongoose, { Document, Schema } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { Iuser } from "../types/interfaces/user.inter";
+import { UserRole } from "../types/interfaces/user.inter";
 
 const userSchema = new Schema<Iuser>({
-	firstname: {
+	fullName: {
 		type: String,
 	},
-    lastname: {
+    matNumber: {
 		type: String,
 	},
-    gender: {
+    regDate: {
+		type: Date,
+	},
+	hostelRoomNumber: {
 		type: String,
 	},
-	email: {
+	walletHash: {
 		type: String,
-		unique: true,
-		index: true,
-		lowercase: true,
 	},
-	password: {
+	role:{
 		type: String,
-		required: true,
-		select: false,
+		enum: UserRole
 	},
-	image: {
-		type: String,
-		default: '',
-	},
-	yearsOfExperience: {
-        type: Number,
-        min: 0,
-    },
-    developerTitle: {
-        type: String,
-        trim: true,
-    },
-    developerStack: {
-        type: [String],
-    },
-    certifications: {
-        type: [String],
-    },
-    portfolioLink: {
-        type: String,
-    },
-    cvLink: {
-        type: String,
-    },
-	isActive: {
-		type: Boolean,
-		required: true,
-		default: false,
-	},
-    verificationToken: {
-			type: String
-	},
-	verificationTokenExpires: {
-			type: Date
-	},
-    otp: {
-        code: {
-            type: Number
-        },
-        expiresAt: {
-            type: Date
-        }
-    },
 	resetPasswordToken: String,
 	resetPasswordExpire: Date,
 	verifyEmailToken: {
@@ -79,25 +36,7 @@ const userSchema = new Schema<Iuser>({
 	  },
 });
 
-
-userSchema.pre('save', async function (next) {
-	if (!this.isModified('password')) {
-	  return next();
-	}
   
-	try {
-	  const hashedPassword = await bcrypt.hash(this.password, 12);
-	  this.password = hashedPassword;
-	} catch (error) {
-
-	  return next();
-	}
-  
-	next();
-});
-
-  
-
 userSchema.methods.generateAuthToken = function () {
     const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET_KEY || '', {
       expiresIn: process.env.JWT_EXPIRES_IN || '',

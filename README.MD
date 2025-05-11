@@ -32,4 +32,4 @@ To generate a pricing proposal, the user must provide the following details abou
 - **Company Size** (optional)
 - **Approx. Number of Screens** (optional)
 
-
+gi

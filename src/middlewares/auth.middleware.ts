@@ -5,6 +5,7 @@ import ResponseHelper from '../utils/response';
 import AuthService from '../services/auth.service';
 
 export default class MiddlewareService {
+  
   static protect = async (req: Request, res: Response, next: NextFunction) => {
     let token;
 
@@ -26,9 +27,9 @@ export default class MiddlewareService {
         return next(new AppError('The user belonging to this token no longer exists.', ResponseHelper.UNAUTHORIZED));
       }
 
-      if (currentUser.changedPasswordAfter(decoded.iat)) {
-        return next(new AppError('User recently changed password, please log in again.', ResponseHelper.UNAUTHORIZED));
-      }
+      // if (currentUser.changedPasswordAfter(decoded.iat)) {
+      //   return next(new AppError('User recently changed password, please log in again.', ResponseHelper.UNAUTHORIZED));
+      // }
 
       req.user = currentUser;
 

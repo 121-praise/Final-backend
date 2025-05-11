@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const DB_URL: string = process.env.DB_URL || '';
+const DB_URL: string = 'mongodb+srv://onoja123:Gabriella12@cluster0.vrc59cx.mongodb.net/health-backend?retryWrites=true&w=majority';
 
 const connectToDatabase = async () =>{
     try {

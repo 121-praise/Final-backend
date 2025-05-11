@@ -11,43 +11,18 @@ export default class ProfileService {
     return userProfile;
   }
 
-  static async setProfile(
-    id: string,
-    data: Iuser
-  ): Promise<Iuser | null> {
-    const profile = await User.findByIdAndUpdate(id, data, { new: true }).select(
-      "+email"
-    );
-    return profile;
-  }
-
-  static async uploadImage(
+    static async setProfile(
     userId: string,
     payload: Iuser
   ): Promise<Iuser | null> {
-    const { image } = payload;
+    const { walletHash } = payload;
 
     const profile = await User.findByIdAndUpdate(
       userId,
-      { image },
+      { walletHash },
       { new: true }
-    ).select("+email");
+    )
     return profile;
   }
 
-
-  static async updateUserProfile(
-    id: string,
-    data: Iuser
-  ): Promise<Iuser | null> {
-    const profile = await User.findByIdAndUpdate(id, data, { new: true }).select(
-      "+email"
-    );
-    return profile;
-  }
-
-  static async deleteMember(id: string): Promise<Iuser | null> {
-    const deleteMember = await User.findByIdAndDelete(id, { new: true });
-    return deleteMember;
-  }
 }

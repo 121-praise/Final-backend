@@ -1,37 +1,18 @@
 import express from 'express';
 import { 
-    signup,
-    verify,
-    login,
-    resendVerification,
-    forgotPassword,
-    resetPassword,
-    logOut,
-    updatePassword,
+    signupPatient,
+    signupStaff,
+    connectLogin
 
 } from '../controllers/auth.controller'
-import MiddlewareService from '../middlewares/auth.middleware';
 
 const router = express.Router();
 
-router.post('/signup', signup)
+router.post('/patient', signupPatient)
 
-router.post('/verify', verify)
+router.post('/staff', signupStaff)
 
-router.post('/login', login)
-
-router.post('/resendverification', resendVerification)
-
-router.post('/forgotpassword', forgotPassword)
-
-router.post('/resetpassword', resetPassword)
-
-router.post('/logout', logOut)
-
-
-router.use(MiddlewareService.protect)
-router.use(MiddlewareService.protect)
-router.post('/updatepassword', updatePassword)
+router.post('/login', connectLogin)
 
 
 export default router;
