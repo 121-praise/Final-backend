@@ -25,4 +25,8 @@ export default class ProfileService {
     return profile;
   }
 
+  static async searchByMatric(){
+    
+  }
+
 }

@@ -37,8 +37,9 @@ export const signupPatient = catchAsync(async (req: Request, res: Response, next
       fullName, 
       matNumber,
       regDate,
-      hostelRoomNumber
-
+      hostelRoomNumber,
+      walletHash
+  
     } = req.body;
     
 
@@ -47,6 +48,7 @@ export const signupPatient = catchAsync(async (req: Request, res: Response, next
       matNumber,
       regDate,
       hostelRoomNumber,
+      walletHash,
       role: UserRole.PATIENT
     });
 
@@ -78,6 +80,7 @@ export const signupStaff = catchAsync(async (req: Request, res: Response, next: 
     const { 
       fullName, 
       role,
+      walletHash,
 
     } = req.body;
     
@@ -85,6 +88,7 @@ export const signupStaff = catchAsync(async (req: Request, res: Response, next: 
     newUser = await AuthService.createUser({
       fullName, 
       role,
+      walletHash
     });
 
     await AuthService.createSendToken(newUser, 201, res);
