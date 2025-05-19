@@ -4,7 +4,9 @@ import {
     setProfile,
     searchByMatric,
     getPharmacists,
-    getNurses
+    getNurses,
+    generateAccessCode,
+    checkAccessCode
 } from "../controllers/profile.controller";
 import MiddlewareService from "../middlewares/auth.middleware";
 
@@ -22,5 +24,9 @@ ProfileRouter.get('/search-by-matric', searchByMatric);
 ProfileRouter.get('/get-pharmacists', getPharmacists);
 
 ProfileRouter.get('/get-nurses', getNurses);
+
+ProfileRouter.post('/generate-access-code', generateAccessCode);
+
+ProfileRouter.post('/check-access-code', checkAccessCode);
 
 export default ProfileRouter;

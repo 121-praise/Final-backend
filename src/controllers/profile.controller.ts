@@ -142,3 +142,57 @@ export const getNurses = catchAsync(async(req: Request, res: Response, next: Nex
     return next(new AppError("An error occurred while trying to get your profile. Please try again.", ResponseHelper.INTERNAL_SERVER_ERROR))
   }
 })
+
+/**
+ * @author Okpe Onoja <okpeonoja18@gmail.com>
+ * @description generate-access-code
+ * @route `/api/v1/profile/generate-access-code'`
+ * @access Private
+ * @type POST
+ **/
+export const generateAccessCode = catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
+  try {
+    const code = await ProfileService.generateAccessCode(req.user.id);
+
+      if(!code ) {
+          return next(new AppError("No profile found", ResponseHelper.RESOURCE_NOT_FOUND))
+      }
+
+      ResponseHelper.sendSuccessResponse(res, { 
+          statusCode: ResponseHelper.OK,
+          data: {accessCode: code} ,  
+      });
+
+  } catch (error) {
+    console.log(error)
+    return next(new AppError("An error occurred while trying to generate your code. Please try again.", ResponseHelper.INTERNAL_SERVER_ERROR))
+  }
+})
+
+
+/**
+ * @author Okpe Onoja <okpeonoja18@gmail.com>
+ * @description Check access code
+ * @route `/api/v1/profile/check-access-code'`
+ * @access Private
+ * @type POST
+ **/
+export const checkAccessCode = catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
+  try {
+    const user = await ProfileService.findUserByAccessCode(req.body.code)
+    
+      if(!user ) {
+          return next(new AppError("No profile found", ResponseHelper.RESOURCE_NOT_FOUND))
+      }
+
+      ResponseHelper.sendSuccessResponse(res, { 
+          statusCode: ResponseHelper.OK,
+          message: `${user.fullName} has this code`, 
+      });
+
+  } catch (error) {
+    console.log(error)
+    return next(new AppError("An error occurred while trying to verify your code. Please try again.", ResponseHelper.INTERNAL_SERVER_ERROR))
+  }
+})
+

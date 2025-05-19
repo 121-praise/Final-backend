@@ -14,6 +14,7 @@ export interface Iuser extends Document{
     hostelRoomNumber: string;
     walletHash: string;
     role: UserRole,
+    accessCode: string
     verificationToken: string;
     verificationTokenExpires: Date;
     resetPasswordToken: number;
