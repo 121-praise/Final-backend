@@ -113,7 +113,7 @@ export const signupStaff = catchAsync(async (req: Request, res: Response, next: 
 export const connectLogin = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
 
 
-  const user = await AuthService.findUserByHash(req.body.hash)
+  const user = await AuthService.findUserByHash(req.body.walletHash)
 
   if (!user) {
       return next(new AppError("User does not exist", ResponseHelper.RESOURCE_NOT_FOUND))

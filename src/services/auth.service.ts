@@ -39,8 +39,8 @@ export default class AuthService {
     return User.findById(userId)
   }
 
-  static async findUserByHash(hash: string): Promise<Iuser | null> {
-    return User.findOne({ hash })
+  static async findUserByHash(walletHash: string): Promise<Iuser | null> {
+    return User.findOne({ walletHash })
   }
 
 
