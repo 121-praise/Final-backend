@@ -1,4 +1,4 @@
-import { Iuser } from "../types/interfaces/user.inter";
+import { Iuser, UserRole } from "../types/interfaces/user.inter";
 import User from "../models/user.model";
 
 export default class ProfileService {
@@ -29,4 +29,13 @@ export default class ProfileService {
     return await User.findOne({ matNumber });
   }
 
+    static async getPharmacists(): Promise<Partial<Iuser>[]> {
+    const userProfile = await User.find({role: UserRole.PHARMACIST});
+    return userProfile;
+  }
+
+      static async getNurses(): Promise<Partial<Iuser>[]> {
+    const userProfile = await User.find({role: UserRole.NURSE});
+    return userProfile;
+  }
 }

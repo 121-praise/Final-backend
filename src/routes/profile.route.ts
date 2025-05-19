@@ -2,7 +2,9 @@ import express from "express";
 import { 
     getProfile, 
     setProfile,
-    searchByMatric
+    searchByMatric,
+    getPharmacists,
+    getNurses
 } from "../controllers/profile.controller";
 import MiddlewareService from "../middlewares/auth.middleware";
 
@@ -16,5 +18,9 @@ ProfileRouter.get('/get-profile', getProfile)
 ProfileRouter.put('/set-profile', setProfile);
 
 ProfileRouter.get('/search-by-matric', searchByMatric);
+
+ProfileRouter.get('/get-pharmacists', getPharmacists);
+
+ProfileRouter.get('/get-nurses', getNurses);
 
 export default ProfileRouter;

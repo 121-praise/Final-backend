@@ -89,3 +89,56 @@ export const searchByMatric = catchAsync(async (req: Request, res: Response, nex
     return next(new AppError("An error occurred while trying to search by mat number. Please try again.", ResponseHelper.INTERNAL_SERVER_ERROR));
   }
 });
+
+/**
+ * @author Okpe Onoja <okpeonoja18@gmail.com>
+ * @description Get pharmacists
+ * @route `/api/v1/profile/get-pharmacists`
+ * @access Private
+ * @type GET
+ **/
+export const getPharmacists = catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
+  try {
+      const profile = await ProfileService.getPharmacists()
+
+      if(!profile ) {
+          return next(new AppError("No profile found", ResponseHelper.RESOURCE_NOT_FOUND))
+      }
+
+      ResponseHelper.sendSuccessResponse(res, { 
+          statusCode: ResponseHelper.OK,
+          data: profile ,  
+      });
+
+  } catch (error) {
+    console.log(error)
+    return next(new AppError("An error occurred while trying to get your profile. Please try again.", ResponseHelper.INTERNAL_SERVER_ERROR))
+  }
+})
+
+
+/**
+ * @author Okpe Onoja <okpeonoja18@gmail.com>
+ * @description Get nurses
+ * @route `/api/v1/profile/get-nurses`
+ * @access Private
+ * @type GET
+ **/
+export const getNurses = catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
+  try {
+      const profile = await ProfileService.getNurses()
+
+      if(!profile ) {
+          return next(new AppError("No profile found", ResponseHelper.RESOURCE_NOT_FOUND))
+      }
+
+      ResponseHelper.sendSuccessResponse(res, { 
+          statusCode: ResponseHelper.OK,
+          data: profile ,  
+      });
+
+  } catch (error) {
+    console.log(error)
+    return next(new AppError("An error occurred while trying to get your profile. Please try again.", ResponseHelper.INTERNAL_SERVER_ERROR))
+  }
+})
