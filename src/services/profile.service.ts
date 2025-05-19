@@ -25,8 +25,8 @@ export default class ProfileService {
     return profile;
   }
 
-  static async searchByMatric(){
-    
+  static async searchByMatric(matNumber: string) {
+    return await User.findOne({ matNumber });
   }
 
 }

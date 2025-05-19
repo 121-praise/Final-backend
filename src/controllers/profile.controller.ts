@@ -57,3 +57,35 @@ export const setProfile = catchAsync(async (req: Request, res: Response, next: N
     return next(new AppError("An error occurred while trying to set your profile. Please try again.", ResponseHelper.INTERNAL_SERVER_ERROR))
   }
 })
+
+/**
+ * @author
+ * @description Search by matric number
+ * @route `/api/v1/profile/search-by-matric`
+ * @access Private
+ * @type GET
+ **/
+export const searchByMatric = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { matNumber } = req.query;
+
+    if (!matNumber || typeof matNumber !== 'string') {
+      return next(new AppError('Matric number is required', ResponseHelper.BAD_REQUEST));
+    }
+
+    const data = await ProfileService.searchByMatric(matNumber);
+
+    if (!data) {
+      return next(new AppError('User not found with the given matric number', ResponseHelper.RESOURCE_NOT_FOUND));
+    }
+
+    return ResponseHelper.sendSuccessResponse(res, {
+      message: 'User retrieved successfully',
+      statusCode: ResponseHelper.OK,
+      data,
+    });
+
+  } catch (error) {
+    return next(new AppError("An error occurred while trying to search by mat number. Please try again.", ResponseHelper.INTERNAL_SERVER_ERROR));
+  }
+});
